@@ -35,7 +35,7 @@ const Home = () => {
 				{
 					data.articles.map((article) => (
 						<div className='homepage-article' key={article.id}>
-							<Link to={`article/${article.slug}/${article.id}`}>
+							<Link to={`/article/${article.slug}/${article.id}`}>
 								<h3 className='article-title'>{article.title}</h3>
 							</Link>
 						</div>

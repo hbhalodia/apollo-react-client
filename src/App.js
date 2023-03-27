@@ -13,10 +13,10 @@ const App = () => {
 		<Routes>
 			<Route path='/' element={<Menu />}>
 				<Route index element={<Home />} />
-				<Route path='/education' element={<Education />} />
-				<Route path='/opinion' element={<Opinion />} />
-				<Route path='/sports' element={<Sports />} />
-				<Route path='/economy' element={<Economy />} />
+				<Route path='/education' element={<Education category="education" />} />
+				<Route path='/opinion' element={<Opinion category="opinion" />} />
+				<Route path='/sports' element={<Sports category="sports" />} />
+				<Route path='/economy' element={<Economy category="economy" />} />
 				<Route path='/article/:slug/:id' element={<Article />} />
 			</Route>
 		</Routes>

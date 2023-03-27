@@ -1,9 +1,29 @@
 import { Outlet } from 'react-router-dom';
 
-const Education = () => {
+import { useQuery, gql } from '@apollo/client';
+
+import CategoryArticle from '../components/categoryArticleList.component';
+
+const GET_CATEGORY = gql`
+	query GetCategory($slug: String, $taxonomy: String) {
+		taxonomies(slug: $slug, taxonomy: $taxonomy) {
+			id
+		}
+	}
+`;
+
+const Education = (props) => {
+
+	const { loading, error, data } = useQuery(GET_CATEGORY, {
+		variables: { taxonomy: 'categories' , slug: props.category },
+	});
+
+	if (loading) return <p>Loading...</p>;
+	if (error) return <p>Error : {error.message}</p>;
+
 	return (
 		<>
-			<div>This is the Education Route</div>
+			<CategoryArticle categoryId={data.taxonomies[0].id} />
 			<Outlet />
 		</>
 	);
