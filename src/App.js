@@ -6,6 +6,7 @@ import Education from './routes/education.component';
 import Opinion from './routes/opinion.component';
 import Sports from './routes/sports.component';
 import Economy from './routes/economy.component';
+import Article from './routes/article.component';
 
 const App = () => {
 	return (
@@ -16,6 +17,7 @@ const App = () => {
 				<Route path='/opinion' element={<Opinion />} />
 				<Route path='/sports' element={<Sports />} />
 				<Route path='/economy' element={<Economy />} />
+				<Route path='/article/:id/:slug' element={<Article />} />
 			</Route>
 		</Routes>
 	);
