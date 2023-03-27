@@ -29,13 +29,20 @@ const Menu = () => {
 
 	return (
 		<Fragment>
-			<ul>
-				{data.menu[0].items.map((menuItem) => (
-					<li key={menuItem.slug}>
-						<Link to={menuItem.slug}>{menuItem.title}</Link>
-					</li>
-				))}
-			</ul>
+			<div className='menu-container'>
+				<div className='menu-left'>
+					<Link to='/'>Home</Link>
+				</div>
+				<div className='menu-right'>
+					<ul className='menu-list'>
+						{data.menu[0].items.map((menuItem) => (
+							<li className='menu-list-item' key={menuItem.slug}>
+								<Link to={menuItem.slug}>{menuItem.title}</Link>
+							</li>
+						))}
+					</ul>
+				</div>
+			</div>
 			<Outlet />
 		</Fragment>
 	);
