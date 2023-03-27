@@ -10,6 +10,10 @@ const GET_CATEGORY_ARTICLES = gql`
 			id
 			title
 			slug
+			excerpt
+			attachment {
+				source_url
+			}
 		}
 	}
 `;
@@ -42,8 +46,15 @@ const CategoryArticle = (props) => {
 				{
 					data.articles.map((article) => (
 						<div className='category-article' key={article.id}>
-							<Link to={`/article/${article.slug}/${article.id}`}>
-								<h3 className='article-title'>{article.title}</h3>
+							<Link className='category-article-link' to={`/article/${article.slug}/${article.id}`}>
+								{
+									null !== article.attachment ?
+										<img src={article.attachment.source_url} alt={article.title} /> : ''
+								}
+								<div className='category-article-info'>
+									<h3 className='category-article-title'>{article.title}</h3>
+									<div className='category-article-excerpt' dangerouslySetInnerHTML={{ __html: article.excerpt }}></div>
+								</div>
 							</Link>
 						</div>
 					))
