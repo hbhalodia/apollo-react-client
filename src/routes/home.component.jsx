@@ -1,5 +1,4 @@
-import { Outlet } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { Outlet, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 import { useQuery, gql } from '@apollo/client';
@@ -24,6 +23,17 @@ const Home = () => {
 
 	const [currentPage, setCurrentPage] = useState(1);
 
+	useEffect(() => {
+		const storedPage = parseInt(localStorage.getItem('currentPage'), 10);
+
+		if (Number.isNaN(storedPage) || storedPage < 1) {
+			setCurrentPage(1);
+		} else {
+			setCurrentPage(storedPage);
+		}
+	}, []);
+
+
 	const { loading, error, data, fetchMore } = useQuery(GET_HOME_ARTICLES, {
 		variables: { postType: 'article', pageSize: pageSize, page: currentPage },
 	});
@@ -40,6 +50,15 @@ const Home = () => {
 		fetchMore({
 			variables: { page: currentPage + 1 },
 		});
+		localStorage.setItem('currentPage', currentPage + 1);
+	}
+
+	const clearPagination = () => {
+		setCurrentPage(1);
+		fetchMore({
+			variables: { page: 1 },
+		});
+		localStorage.setItem('currentPage', 1);
 	}
 
 	return (
@@ -63,6 +82,7 @@ const Home = () => {
 				}
 			</div>
 			<button onClick={handleLoadMore}>Load More</button>
+			<button onClick={clearPagination}>Clear</button>
 			<Outlet />
 		</>
 	);
