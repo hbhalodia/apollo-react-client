@@ -47,20 +47,18 @@ const Home = () => {
 			<div className='homepage-articles-container'>
 				{
 					data.articles.map((article) => (
-						<>
-							<div className='homepage-article' key={article.id}>
-								<Link className='article-link' to={`/article/${article.slug}/${article.id}`}>
-									{
-										null !== article.attachment ?
-											<img src={article.attachment.source_url} alt={article.title} /> : ''
-									}
-									<div className='article-info'>
-										<h3 className='article-title'>{article.title}</h3>
-										<div className='article-excerpt' dangerouslySetInnerHTML={{ __html: article.excerpt }}></div>
-									</div>
-								</Link>
-							</div>
-						</>
+						<div className='homepage-article' key={article.id}>
+							<Link className='article-link' to={`/article/${article.slug}/${article.id}`}>
+								{
+									null !== article.attachment ?
+										<img src={article.attachment.source_url} alt={article.title} /> : ''
+								}
+								<div className='article-info'>
+									<h3 className='article-title'>{article.title}</h3>
+									<div className='article-excerpt' dangerouslySetInnerHTML={{ __html: article.excerpt }}></div>
+								</div>
+							</Link>
+						</div>
 					))
 				}
 			</div>
