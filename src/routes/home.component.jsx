@@ -54,6 +54,20 @@ const Home = () => {
 		localStorage.setItem('currentPage' + location.pathname , currentPage + 1);
 	}
 
+	const handlePreviousPage = () => {
+
+		if (currentPage === 1) {
+			setCurrentPage(1);
+		} else {
+			setCurrentPage(currentPage - 1);
+		}
+
+		fetchMore({
+			variables: { page: currentPage - 1 },
+		});
+		localStorage.setItem('currentPage' + location.pathname, currentPage - 1);
+	}
+
 	const clearPagination = () => {
 		setCurrentPage(1);
 		fetchMore({
@@ -64,6 +78,9 @@ const Home = () => {
 
 	return (
 		<>
+			<div className='current-page'>
+				Current Page : {currentPage}
+			</div>
 			<div className='homepage-articles-container'>
 				{
 					data.articles.map((article) => (
@@ -82,8 +99,11 @@ const Home = () => {
 					))
 				}
 			</div>
-			<button onClick={handleLoadMore}>Load More</button>
-			<button onClick={clearPagination}>Clear</button>
+			<div class="pagination-buttons">
+				<button onClick={handlePreviousPage}>Previous - {currentPage-1}</button>
+				<button onClick={clearPagination}>Clear</button>
+				<button onClick={handleLoadMore}>Next - {currentPage + 1}</button>
+			</div>
 			<Outlet />
 		</>
 	);
