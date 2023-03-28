@@ -1,4 +1,4 @@
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 import { useQuery, gql } from '@apollo/client';
@@ -20,18 +20,19 @@ const GET_HOME_ARTICLES = gql`
 const Home = () => {
 
 	const pageSize = 10;
+	const location = useLocation();
 
 	const [currentPage, setCurrentPage] = useState(1);
 
 	useEffect(() => {
-		const storedPage = parseInt(localStorage.getItem('currentPage'), 10);
+		const storedPage = parseInt(localStorage.getItem('currentPage' + location.pathname), 10);
 
 		if (Number.isNaN(storedPage) || storedPage < 1) {
 			setCurrentPage(1);
 		} else {
 			setCurrentPage(storedPage);
 		}
-	}, []);
+	}, [location.pathname]);
 
 
 	const { loading, error, data, fetchMore } = useQuery(GET_HOME_ARTICLES, {
@@ -50,7 +51,7 @@ const Home = () => {
 		fetchMore({
 			variables: { page: currentPage + 1 },
 		});
-		localStorage.setItem('currentPage', currentPage + 1);
+		localStorage.setItem('currentPage' + location.pathname , currentPage + 1);
 	}
 
 	const clearPagination = () => {
@@ -58,7 +59,7 @@ const Home = () => {
 		fetchMore({
 			variables: { page: 1 },
 		});
-		localStorage.setItem('currentPage', 1);
+		localStorage.setItem('currentPage' + location.pathname, 1);
 	}
 
 	return (

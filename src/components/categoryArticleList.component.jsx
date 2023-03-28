@@ -1,6 +1,5 @@
-import { Outlet } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { Outlet, Link, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 import { useQuery, gql } from '@apollo/client';
 
@@ -22,9 +21,20 @@ const GET_CATEGORY_ARTICLES = gql`
 const CategoryArticle = (props) => {
 
 	const categoryId = parseInt(props.categoryId);
+	const location = useLocation();
 	const pageSize = 10;
 
 	const [currentPage, setCurrentPage] = useState(1);
+
+	useEffect(() => {
+		const storedPage = parseInt(localStorage.getItem('currentPage' + location.pathname), 10);
+
+		if (Number.isNaN(storedPage) || storedPage < 1) {
+			setCurrentPage(1);
+		} else {
+			setCurrentPage(storedPage);
+		}
+	}, [location.pathname]);
 
 	const { loading, error, data, fetchMore } = useQuery(GET_CATEGORY_ARTICLES, {
 		variables: { pageSize: pageSize, postType: 'article', categoryId: categoryId, page: currentPage },
@@ -35,6 +45,15 @@ const CategoryArticle = (props) => {
 		fetchMore({
 			variables: { page: currentPage + 1 },
 		});
+		localStorage.setItem('currentPage' + location.pathname, currentPage + 1);
+	}
+
+	const clearPagination = () => {
+		setCurrentPage(1);
+		fetchMore({
+			variables: { page: 1 },
+		});
+		localStorage.setItem('currentPage' + location.pathname, 1);
 	}
 
 	if (loading) return <p>Loading...</p>;
@@ -61,6 +80,7 @@ const CategoryArticle = (props) => {
 				}
 			</div>
 			<button onClick={handleLoadMore}>Load More</button>
+			<button onClick={clearPagination}>Clear</button>
 			<Outlet />
 		</>
 	);
