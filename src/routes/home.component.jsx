@@ -99,7 +99,7 @@ const Home = () => {
 					))
 				}
 			</div>
-			<div class="pagination-buttons">
+			<div className="pagination-buttons">
 				<button onClick={handlePreviousPage}>Previous - {currentPage-1}</button>
 				<button onClick={clearPagination}>Clear</button>
 				<button onClick={handleLoadMore}>Next - {currentPage + 1}</button>
