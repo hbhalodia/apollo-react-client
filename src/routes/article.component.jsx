@@ -3,7 +3,7 @@ import { Outlet, useParams } from 'react-router-dom';
 
 import { useQuery, gql, useMutation } from '@apollo/client';
 
-const GET_SINGLE_ARTICLE = gql`
+export const GET_SINGLE_ARTICLE = gql`
 	query GetArticle($id: ID!, $postType: String) {
 		article(id: $id, postType: $postType) {
 			id
