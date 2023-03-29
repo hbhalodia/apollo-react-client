@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { useQuery, gql } from '@apollo/client';
 
-const GET_TOP_MENU = gql`
+export const GET_TOP_MENU = gql`
 	query GetTopMenu($slug: String) {
 		menu(slug: $slug) {
 			name

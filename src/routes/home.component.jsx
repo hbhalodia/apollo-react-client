@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 
 import { useQuery, gql } from '@apollo/client';
 
-const GET_HOME_ARTICLES = gql`
+export const GET_HOME_ARTICLES = gql`
 	query GetHomeArticles($pageSize: Int, $postType: String, $page: Int) {
 		articles(pageSize: $pageSize, postType: $postType, page: $page) {
 			id
