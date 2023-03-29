@@ -12,6 +12,7 @@ const App = () => {
 				<Route index element={<Home />} />
 				<Route path='/:categorySlug' element={<Category />} />
 				<Route path='/article/:slug/:id' element={<Article />} />
+				<Route path='*' element={<h1>404: Not Found</h1>} />
 			</Route>
 		</Routes>
 	);

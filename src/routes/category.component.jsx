@@ -25,7 +25,7 @@ const Category = () => {
 
 	return (
 		<>
-			{ data.taxonomies.length > 0 ? <CategoryArticle categoryId={data.taxonomies[0].id} /> : <p>404: Not Found</p> }
+			{ data.taxonomies.length > 0 ? <CategoryArticle categoryId={data.taxonomies[0].id} /> : <h1>404: Not Found</h1> }
 			<Outlet />
 		</>
 	);
