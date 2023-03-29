@@ -5,15 +5,18 @@ import "@testing-library/jest-dom";
 import { GET_SINGLE_ARTICLE } from '../article.component';
 import Article from '../article.component';
 
+import { useParams } from 'react-router-dom';
+
 jest.mock('react-router-dom', () => ({
 	...jest.requireActual('react-router-dom'),
-	useParams: () => ({
-		id: '128',
-	}),
+	useParams: jest.fn(),
 }));
 
 describe('Article Component', () => {
 	it('should render loading state initially', async () => {
+
+		useParams.mockReturnValue({ id: '128' });
+
 		const mocks = [
 			{
 				request: {
@@ -58,6 +61,9 @@ describe('Article Component', () => {
 	});
 
 	it('should render data after query is complete', async () => {
+
+		useParams.mockReturnValue({ id: '128' });
+
 		const mocks = [
 			{
 				request: {
@@ -106,6 +112,9 @@ describe('Article Component', () => {
 	});
 
 	it('should render error state if query fails', async () => {
+
+		useParams.mockReturnValue({ id: '128' });
+
 		const mocks = [
 			{
 				request: {

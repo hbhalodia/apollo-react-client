@@ -2,87 +2,105 @@ import { render, screen } from '@testing-library/react';
 import { MockedProvider } from '@apollo/client/testing';
 import "@testing-library/jest-dom";
 
-import { GET_CATEGORY } from '../economy.component';
-import Economy from '../economy.component';
+import { GET_HOME_ARTICLES } from '../home.component';
+import Home from '../home.component';
 
-describe('Economy Component', () => {
-	it('loading state initially', async () => {
+import { MemoryRouter } from 'react-router-dom';
 
+describe('Home Article List Component', () => {
+	it('should render loading state initially', async () => {
 		const mocks = [
 			{
 				request: {
-					query: GET_CATEGORY,
+					query: GET_HOME_ARTICLES,
 					variables: {
-						taxonomy: 'categories',
-						slug: 'economy',
+						pageSize: 10,
+						postType: 'article',
+						page: 1,
 					},
 				},
 				result: {
 					data: {
-						taxonomies: [
+						articles: [
 							{
-								id: 1,
-							},
-						],
+								id: '128',
+								title: 'testing',
+								slug: 'testing',
+								excerpt: 'Excerpt',
+								attachment: {
+									source_url: 'https://www.example.com/image.jpg',
+								}
+							}
+						]
 					},
 				},
 			},
 		];
 
 		render(
-			<MockedProvider mocks={mocks} addTypename={false}>
-				<Economy category="economy" />
-			</MockedProvider>
+			<MemoryRouter>
+				<MockedProvider mocks={mocks} addTypename={false}>
+					<Home />
+				</MockedProvider>
+			</MemoryRouter>
 		);
 
 		expect(await screen.findByText("Loading...")).toBeInTheDocument();
 	});
 
-	// it('query data rendered', async () => {
-
-	// 	const mocks = [
-	// 		{
-	// 			request: {
-	// 				query: GET_CATEGORY,
-	// 				variables: {
-	// 					taxonomy: 'categories',
-	// 					slug: 'economy',
-	// 				},
-	// 			},
-	// 			result: {
-	// 				data: {
-	// 					taxonomies: [
-	// 						{
-	// 							id: 1,
-	// 						},
-	// 					],
-	// 				},
-	// 			},
-	// 		},
-	// 	];
-
-	// 	render(
-	// 		<MockedProvider mocks={mocks} addTypename={false}>
-	// 			<Economy category="economy" />
-	// 		</MockedProvider>
-	// 	);
-
-	// 	await screen.findByText('economy');
-
-	// 	const dataElement = screen.getByText('economy');
-
-	// 	expect(dataElement).toBeInTheDocument();
-	// });
-
-	it('Error state', async () => {
-
+	it('should render data after query is complete', async () => {
 		const mocks = [
 			{
 				request: {
-					query: GET_CATEGORY,
+					query: GET_HOME_ARTICLES,
 					variables: {
-						taxonomy: 'categories',
-						slug: 'economy',
+						pageSize: 10,
+						postType: 'article',
+						page: 1,
+					},
+				},
+				result: {
+					data: {
+						articles: [
+							{
+								id: '128',
+								title: 'testing',
+								slug: 'testing',
+								excerpt: 'Excerpt',
+								attachment: {
+									source_url: 'https://www.example.com/image.jpg',
+								}
+							}
+						]
+					},
+				},
+			},
+		];
+
+		render(
+			<MemoryRouter>
+				<MockedProvider mocks={mocks} addTypename={false}>
+					<Home />
+				</MockedProvider>
+			</MemoryRouter>
+		);
+
+		await screen.findByText('testing');
+
+		const dataElement = screen.getByText('testing');
+
+		expect(dataElement).toBeInTheDocument();
+	});
+
+	it('should render error state if query fails', async () => {
+		const mocks = [
+			{
+				request: {
+					query: GET_HOME_ARTICLES,
+					variables: {
+						pageSize: 10,
+						postType: 'article',
+						page: 1,
 					},
 				},
 				error: new Error('Failed to fetch data'),
@@ -90,11 +108,15 @@ describe('Economy Component', () => {
 		];
 
 		render(
-			<MockedProvider mocks={mocks} addTypename={false}>
-				<Economy category="economy" />
-			</MockedProvider>
+			<MemoryRouter>
+				<MockedProvider mocks={mocks} addTypename={false}>
+					<Home />
+				</MockedProvider>
+			</MemoryRouter>
 		);
 
-		expect(await screen.findByText("Error : Failed to fetch data")).toBeInTheDocument();
+		const errorElement = await screen.findByText('Error : Failed to fetch data');
+
+		expect(errorElement).toBeInTheDocument();
 	});
 });
