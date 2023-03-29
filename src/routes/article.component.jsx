@@ -42,7 +42,7 @@ const Article = () => {
 
 	const [isArticleViewed, setIsArticleViewed] = useState(false);
 
-	const { loading: queryLoading, error: queryError, data: queryData, refetch: queryRefetch } = useQuery(GET_SINGLE_ARTICLE, {
+	const { loading: queryLoading, error: queryError, data: queryData } = useQuery(GET_SINGLE_ARTICLE, {
 		variables: { id: id, postType: 'article' },
 	});
 
