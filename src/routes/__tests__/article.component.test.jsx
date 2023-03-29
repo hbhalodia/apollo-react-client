@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { MockedProvider } from '@apollo/client/testing';
 import "@testing-library/jest-dom";
 
-import { GET_SINGLE_ARTICLE } from '../article.component';
+import { GET_SINGLE_ARTICLE, SINGLE_ARTICLE_COUNTER } from '../article.component';
 import Article from '../article.component';
 
 import { useParams } from 'react-router-dom';
@@ -96,6 +96,25 @@ describe('Article Component', () => {
 					},
 				},
 			},
+			{
+				request: {
+					query: SINGLE_ARTICLE_COUNTER,
+					variables: {
+						postId: '128',
+						postType: 'article',
+						key: 'article-view-count',
+						value: '4'
+					}
+				},
+				result: {
+					data: {
+						addArticleViewCount: {
+							title: 'testing',
+							id: '128',
+						}
+					}
+				}
+			}
 		];
 
 		render(

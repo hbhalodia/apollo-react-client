@@ -24,7 +24,7 @@ export const GET_SINGLE_ARTICLE = gql`
 	}
 `;
 
-const SINGLE_ARTICLE_COUNTER = gql`
+export const SINGLE_ARTICLE_COUNTER = gql`
 	mutation ArticleCounter($postId: ID!, $postType: String, $key: String, $value: String) {
 		addArticleViewCount(postId: $postId, postType: $postType, metaKey: $key, metaValue: $value) {
 			id
