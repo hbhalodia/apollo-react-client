@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 
 import { useQuery, gql } from '@apollo/client';
 
-const GET_CATEGORY_ARTICLES = gql`
+export const GET_CATEGORY_ARTICLES = gql`
 	query GetCategoryArticles($pageSize: Int, $postType: String, $categoryId: Int, $page: Int) {
 		articles(pageSize: $pageSize, postType: $postType, category: $categoryId, page: $page) {
 			id
@@ -40,6 +40,9 @@ const CategoryArticle = (props) => {
 		variables: { pageSize: pageSize, postType: 'article', categoryId: categoryId, page: currentPage },
 	});
 
+	if (loading) return <p>Loading...</p>;
+	if (error) return <p>Error : {error.message}</p>;
+
 	const handleLoadMore = () => {
 		setCurrentPage(currentPage + 1);
 		fetchMore({
@@ -69,9 +72,6 @@ const CategoryArticle = (props) => {
 		});
 		localStorage.setItem('currentPage' + location.pathname, currentPage - 1);
 	}
-
-	if (loading) return <p>Loading...</p>;
-	if (error) return <p>Error : {error.message}</p>;
 
 	return (
 		<>

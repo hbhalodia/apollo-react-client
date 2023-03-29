@@ -46,7 +46,7 @@ describe('Opinion Component', () => {
 	// 				query: GET_CATEGORY,
 	// 				variables: {
 	// 					taxonomy: 'categories',
-	// 					slug: 'economy',
+	// 					slug: 'opinion',
 	// 				},
 	// 			},
 	// 			result: {
@@ -67,9 +67,9 @@ describe('Opinion Component', () => {
 	// 		</MockedProvider>
 	// 	);
 
-	// 	await screen.findByText('economy');
+	// 	await screen.findByText('opinion');
 
-	// 	const dataElement = screen.getByText('economy');
+	// 	const dataElement = screen.getByText('opinion');
 
 	// 	expect(dataElement).toBeInTheDocument();
 	// });
@@ -91,7 +91,7 @@ describe('Opinion Component', () => {
 
 		render(
 			<MockedProvider mocks={mocks} addTypename={false}>
-				<Opinion category="economy" />
+				<Opinion category="opinion" />
 			</MockedProvider>
 		);
 
