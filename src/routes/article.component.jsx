@@ -68,7 +68,6 @@ const Article = () => {
 
 	if (!isArticleViewed) {
 		setIsArticleViewed(true);
-		// queryRefetch();
 		addArticleCounter({ variables: { postId: id, postType: 'article', key: keyName, value: String(parseInt(keyValue) + 1) } });
 	}
 
