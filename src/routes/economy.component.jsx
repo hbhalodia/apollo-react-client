@@ -4,7 +4,7 @@ import { useQuery, gql } from '@apollo/client';
 
 import CategoryArticle from '../components/categoryArticleList.component';
 
-const GET_CATEGORY = gql`
+export const GET_CATEGORY = gql`
 	query GetCategory($slug: String, $taxonomy: String) {
 		taxonomies(slug: $slug, taxonomy: $taxonomy) {
 			id
