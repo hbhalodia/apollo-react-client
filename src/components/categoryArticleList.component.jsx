@@ -25,6 +25,7 @@ const CategoryArticle = (props) => {
 
 	const pageSize = 10;
 	const categoryId = parseInt(props.categoryId);
+	const categoryName = props.categoryName;
 	const [currentPage, setCurrentPage] = useState(1);
 	const location = useLocation();
 	const [totalPages, setTotalPages] = useState(null);
@@ -43,7 +44,7 @@ const CategoryArticle = (props) => {
 	}, [location.pathname]);
 
 	useEffect(() => {
-		document.title = 'Category - News' + currentPage;
+		document.title = `${categoryName} News - ${currentPage}`;
 
 		setLoading(true); // Make loading true.
 
@@ -68,7 +69,7 @@ const CategoryArticle = (props) => {
 			setLoading(false);
 			setError(true);
 		});
-	}, [currentPage, categoryId]);
+	}, [currentPage, categoryId, categoryName]);
 
 	if (loading) return <p>Loading...</p>;
 	if (error) return <p>Error</p>;

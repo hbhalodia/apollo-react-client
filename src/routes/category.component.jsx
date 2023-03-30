@@ -8,6 +8,7 @@ export const GET_CATEGORY = gql`
 	query GetCategory($slug: String, $taxonomy: String) {
 		taxonomies(slug: $slug, taxonomy: $taxonomy) {
 			id
+			name
 		}
 	}
 `;
@@ -25,7 +26,7 @@ const Category = () => {
 
 	return (
 		<>
-			{ data.taxonomies.length > 0 ? <CategoryArticle categoryId={data.taxonomies[0].id} /> : <h1>404: Not Found</h1> }
+			{data.taxonomies.length > 0 ? <CategoryArticle categoryName={data.taxonomies[0].name} categoryId={data.taxonomies[0].id} /> : <h1>404: Not Found</h1> }
 			<Outlet />
 		</>
 	);
