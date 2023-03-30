@@ -2,6 +2,7 @@ import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 import axios from 'axios';
+import { Env } from '../envVariables/env';
 
 import Pagination from '../components/pagination.component';
 
@@ -24,9 +25,10 @@ const Home = () => {
 	const pageSize = 10;
 	const location = useLocation();
 	const [currentPage, setCurrentPage] = useState(1);
+	const [totalPages, setTotalPages] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(false);
-	const [totalPages, setTotalPages] = useState(0);
+	const [data, setData] = useState([]);
 
 	useEffect(() => {
 		const storedPage = parseInt(localStorage.getItem('currentPage' + location.pathname), 10);
@@ -38,7 +40,6 @@ const Home = () => {
 		}
 	}, [location.pathname]);
 
-	const [data, setData] = useState([]);
 
 	useEffect(() => {
 
@@ -46,21 +47,18 @@ const Home = () => {
 
 		setLoading(true); // Make loading true.
 
-		axios.post('http://localhost:4002/', {
+		axios.post(`${Env.serverUrl}`, {
 			query: GET_HOME_ARTICLES,
 			variables: {
 				postType: 'article',
 				pageSize: pageSize,
-				page: currentPage
+				page: parseInt(currentPage)
 			},
 		}).then(response => {
-
-			console.log(response.headers['x-wp-totalpages']);
 			if (response.data.data.articles) {
 				setData(response.data.data.articles);
 				setLoading(false);
 			}
-
 			if (response.headers['x-wp-totalpages']) {
 				setTotalPages(response.headers['x-wp-totalpages']);
 			}

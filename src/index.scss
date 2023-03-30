@@ -200,6 +200,7 @@ img {
 			}
 
 			&.active {
+				pointer-events: none;
 				button {
 					color: red;
 				}

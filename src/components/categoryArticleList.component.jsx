@@ -1,9 +1,12 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
-import { useQuery, gql } from '@apollo/client';
+import axios from 'axios';
 
-export const GET_CATEGORY_ARTICLES = gql`
+import Pagination from '../components/pagination.component';
+import { Env } from '../envVariables/env';
+
+export const GET_CATEGORY_ARTICLES = `
 	query GetCategoryArticles($pageSize: Int, $postType: String, $categoryId: Int, $page: Int) {
 		articles(pageSize: $pageSize, postType: $postType, category: $categoryId, page: $page) {
 			id
@@ -20,11 +23,14 @@ export const GET_CATEGORY_ARTICLES = gql`
 
 const CategoryArticle = (props) => {
 
-	const categoryId = parseInt(props.categoryId);
-	const location = useLocation();
 	const pageSize = 10;
-
+	const categoryId = parseInt(props.categoryId);
 	const [currentPage, setCurrentPage] = useState(1);
+	const location = useLocation();
+	const [totalPages, setTotalPages] = useState(null);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState(false);
+	const [data, setData] = useState([]);
 
 	useEffect(() => {
 		const storedPage = parseInt(localStorage.getItem('currentPage' + location.pathname), 10);
@@ -36,41 +42,40 @@ const CategoryArticle = (props) => {
 		}
 	}, [location.pathname]);
 
-	const { loading, error, data, fetchMore } = useQuery(GET_CATEGORY_ARTICLES, {
-		variables: { pageSize: pageSize, postType: 'article', categoryId: categoryId, page: currentPage },
-	});
+	useEffect(() => {
+		document.title = 'Category - News' + currentPage;
+
+		setLoading(true); // Make loading true.
+
+		axios.post(`${Env.serverUrl}`, {
+			query: GET_CATEGORY_ARTICLES,
+			variables: {
+				pageSize: pageSize,
+				postType: 'article',
+				categoryId: parseInt(categoryId),
+				page: parseInt(currentPage)
+			},
+		}).then(response => {
+			if (response.data.data.articles) {
+				setData(response.data.data.articles);
+				setLoading(false);
+			}
+			if (response.headers['x-wp-totalpages']) {
+				setTotalPages(response.headers['x-wp-totalpages']);
+			}
+		}).catch(error => {
+			console.error(error);
+			setLoading(false);
+			setError(true);
+		});
+	}, [currentPage, categoryId]);
 
 	if (loading) return <p>Loading...</p>;
-	if (error) return <p>Error : {error.message}</p>;
+	if (error) return <p>Error</p>;
 
-	const handleLoadMore = () => {
-		setCurrentPage(currentPage + 1);
-		fetchMore({
-			variables: { page: currentPage + 1 },
-		});
-		localStorage.setItem('currentPage' + location.pathname, currentPage + 1);
-	}
-
-	const clearPagination = () => {
-		setCurrentPage(1);
-		fetchMore({
-			variables: { page: 1 },
-		});
-		localStorage.setItem('currentPage' + location.pathname, 1);
-	}
-
-	const handlePreviousPage = () => {
-
-		if (currentPage === 1) {
-			setCurrentPage(1);
-		} else {
-			setCurrentPage(currentPage - 1);
-		}
-
-		fetchMore({
-			variables: { page: currentPage - 1 },
-		});
-		localStorage.setItem('currentPage' + location.pathname, currentPage - 1);
+	const onPageChange = (pageNumber) => {
+		localStorage.setItem('currentPage' + location.pathname, pageNumber);
+		setCurrentPage(pageNumber);
 	}
 
 	return (
@@ -80,7 +85,7 @@ const CategoryArticle = (props) => {
 			</div>
 			<div className='category-articles-container'>
 				{
-					data.articles.map((article) => (
+					data.map((article) => (
 						<div className='category-article' key={article.id}>
 							<Link className='category-article-link' to={`/article/${article.slug}/${article.id}`}>
 								{
@@ -96,11 +101,7 @@ const CategoryArticle = (props) => {
 					))
 				}
 			</div>
-			<div className="pagination-buttons">
-				<button onClick={handlePreviousPage}>Previous - {currentPage - 1}</button>
-				<button onClick={clearPagination}>Clear</button>
-				<button onClick={handleLoadMore}>Next - {currentPage + 1}</button>
-			</div>
+			<Pagination totalPages={totalPages} onPageChange={onPageChange} currentPage={currentPage} />
 			<Outlet />
 		</>
 	);
