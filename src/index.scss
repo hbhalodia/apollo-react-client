@@ -182,3 +182,35 @@ img {
 	flex-direction: row;
 	gap: 20px;
 }
+
+.pagination-container {
+	.pagination-list {
+		list-style-type: none;
+		display: flex;
+		margin: 0;
+		padding: 0;
+
+		li {
+
+			margin: 0 6px;
+			color: black;
+
+			&.disabled {
+				pointer-events: none;
+			}
+
+			&.active {
+				button {
+					color: red;
+				}
+			}
+
+			button {
+				background-color: transparent;
+				border: none;
+				border-radius: 0px;
+				padding: 2px;
+			}
+		}
+	}
+}
