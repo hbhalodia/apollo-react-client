@@ -92,6 +92,22 @@ img {
 			border-bottom: 2px solid black;
 		}
 	}
+
+	:nth-child(2n) {
+			.article-link {
+				img {
+					order: 2;
+				}
+
+				.article-info {
+					margin: 0 64px 0 0;
+				}
+
+				h3 {
+					text-align: left;
+				}
+			}
+	}
 }
 
 .category-articles-container {
@@ -123,6 +139,24 @@ img {
 				text-align: right;
 			}
 			border-bottom: 2px solid black;
+		}
+	}
+
+	:nth-child(2n) {
+		.category-article {
+			&-link {
+				img {
+					order: 2;
+				}
+
+				.category-article-info {
+					margin: 0 64px 0 0;
+				}
+
+				h3 {
+					text-align: left;
+				}
+			}
 		}
 	}
 }
