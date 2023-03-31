@@ -178,4 +178,23 @@ describe('Home Component', () => {
 
 		expect(dataElement).toBeInTheDocument();
 	});
+
+	it('renders Error', async () => {
+		const mockError = new Error('GraphQL API error');
+		axios.post.mockRejectedValueOnce(mockError);
+
+		render(
+			<MemoryRouter>
+				<Home />
+			</MemoryRouter>
+		);
+
+		await waitFor(() => expect(axios.post).toHaveBeenCalledTimes(1));
+
+		await screen.findByText('Error');
+
+		const dataElement = screen.getByText('Error');
+
+		expect(dataElement).toBeInTheDocument();
+	});
 })
