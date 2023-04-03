@@ -1,3 +1,5 @@
+import React from 'react';
+
 const Pagination = ({ totalPages, onPageChange, currentPage }) => {
 
 	const handlePageClick = (pageNumber) => {

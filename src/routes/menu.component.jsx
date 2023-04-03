@@ -2,6 +2,8 @@ import { Fragment } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
+import React from 'react';
+
 import { useQuery, gql } from '@apollo/client';
 
 export const GET_TOP_MENU = gql`

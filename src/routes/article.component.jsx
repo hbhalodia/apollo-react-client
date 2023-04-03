@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useState } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
+import React from 'react';
 
 import { useQuery, gql, useMutation } from '@apollo/client';
 

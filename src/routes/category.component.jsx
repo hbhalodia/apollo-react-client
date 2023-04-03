@@ -1,4 +1,5 @@
 import { Outlet, useParams } from 'react-router-dom';
+import React from 'react';
 
 import { useQuery, gql } from '@apollo/client';
 
